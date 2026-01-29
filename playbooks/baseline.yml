@@ -1,0 +1,46 @@
+---
+- name: Prepare a RHEL server baseline
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Ensure opsuser exists and is in wheel
+      ansible.builtin.user:
+        name: opsuser
+        groups: wheel
+        append: true
+        create_home: true
+        state: present
+
+    - name: Allow opsuser passwordless sudo (wheel-style drop-in)
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/90-opsuser
+        content: "opsuser ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: "0440"
+        validate: "/usr/sbin/visudo -cf %s"
+
+    - name: Install baseline packages
+      ansible.builtin.dnf:
+        name:
+          - vim-minimal
+          - curl
+          - git
+        state: present
+
+    - name: Ensure sshd is enabled and running
+      ansible.builtin.service:
+        name: sshd
+        state: started
+        enabled: true
+
+    - name: Set /etc/motd banner
+      ansible.builtin.copy:
+        dest: /etc/motd
+        content: |
+          Authorized access only.
+          This system is managed by Ansible (AAP Homelab).
+        owner: root
+        group: root
+        mode: "0644"
