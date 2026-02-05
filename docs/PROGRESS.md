@@ -1,89 +1,70 @@
 
 ---
 
-## `docs/PROGRESS.md`
+## 📄 `docs/PROGRESS.md`
 
 ```markdown
 # PROGRESS.md
 ## Ansible Automation Platform – Learning Progress
 
-This file tracks **what has been completed**, **what is in progress**, and **what comes next**.
+Tracks what is complete, what is in progress, and what comes next.
 
 ---
 
-## ✅ Completed Milestones
+## ✅ Completed This Session
 
-### Git & Repo
-- Created GitHub repository: `ansible-playbooks`
-- Established GitOps directory structure
-- Fixed early mistake: empty playbook pushed → corrected and re-synced
-- SSH key authentication to GitHub configured
+### Git & Workflow
+- Git author identity configured correctly (non-root)
+- Root Git usage identified as an anti-pattern and corrected
+- Successful commit and push workflow re-established
 
-### AAP Core Setup
-- Containerized AAP running successfully
-- Controller services verified via podman
-- Organization created: HomeLab
-- Source Control credential created and working
-- Project created and syncing correctly from GitHub
+### Baseline Playbook
+- `baseline.yml` updated with:
+  - Explicit user shell
+  - Consistent task tagging
+- Baseline Job Template executed twice in AAP
+- **Idempotence confirmed**:
+  - Second run: `ok=6 changed=0 failed=0`
 
-### Inventory & Access
-- Inventory moved to Git (YAML-based)
-- Host vars and groups structured correctly
-- Managed node reachable via SSH
-- Become (sudo) working correctly in AAP jobs
-
-### First Automations
-- ✅ Ping playbook created
-- ✅ Ping Job Template created
-- ✅ Ping Job executed successfully against managed01
-
-### Baseline Automation
-- Created `baseline.yml`
-- Fixed empty-file Git issue
-- Playbook now visible in AAP after sync
-- VS Code used successfully as editor + Git client
+### AAP Validation
+- Baseline playbook runs cleanly via AAP
+- Become works correctly
+- No warnings or drift detected
 
 ---
 
 ## 🟡 In Progress
 
-- Running baseline playbook as a Job Template
-- Verifying idempotence (second run = no changes)
-- Improving VS Code Ansible experience (extensions, validation)
+- Refactoring baseline playbook into a reusable **role**
+- Deciding role structure and variable placement
+- Preparing for template and handler usage
 
 ---
 
-## ⏭️ Next Planned Tasks (Near-Term)
+## ⏭️ Next Session Planned Work
 
-### Playbook Improvements
-- Add:
-  - Handlers
-  - Templates (`template:` module)
-  - Tags (`--tags`, `--skip-tags`)
-  - Conditionals
-- Convert baseline tasks into a **role**
+### Roles & Structure
+- Create `roles/baseline/`
+- Move tasks into role task files
+- Decide placement for MOTD content (template vs static)
+- Introduce handlers where appropriate
 
-### AAP Features
-- Surveys (prompt for username / package list)
-- Workflow Templates
-- RBAC (teams, limited users)
-- Credential best practices
+### AAP Enhancements
+- Update Job Template to use role-based playbook
+- Introduce tags usage in AAP job runs
+- Begin workflow-template discussion
 
-### Quality & Professionalism
-- Ansible-lint integration
-- Naming conventions
-- Role-based repo layout
-- Documentation per playbook
+### Quality Improvements
+- Introduce ansible-lint considerations
+- Naming conventions aligned with enterprise repos
+- Documentation per role
 
 ---
 
-## 🎯 Long-Term Goals
+## 🎯 Long-Term Direction
 
-- Production-grade playbooks
-- Confidence reading & modifying enterprise playbooks
-- Real AAP usage at work (projects, workflows, approvals)
-- RHCSA → RHCE alignment
+- Production-grade role-based repository
+- Comfortable navigation of enterprise Ansible codebases
+- Confident use of AAP features (workflows, RBAC, surveys)
+- Alignment with RHCE-level expectations
 
----
-
-Last updated: 2026-01-28
