@@ -1,9 +1,3 @@
-
----
-
-## 📄 `docs/PROGRESS.md`
-
-```markdown
 # PROGRESS.md
 ## Ansible Automation Platform – Learning Progress
 
@@ -67,4 +61,3 @@ Tracks what is complete, what is in progress, and what comes next.
 - Comfortable navigation of enterprise Ansible codebases
 - Confident use of AAP features (workflows, RBAC, surveys)
 - Alignment with RHCE-level expectations
-
