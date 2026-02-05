@@ -10,7 +10,11 @@
         groups: wheel
         append: true
         create_home: true
+        shell: /bin/bash
         state: present
+      tags:
+        - users
+          
 
     - name: Allow opsuser passwordless sudo (wheel-style drop-in)
       ansible.builtin.copy:
@@ -20,6 +24,8 @@
         group: root
         mode: "0440"
         validate: "/usr/sbin/visudo -cf %s"
+      tags:
+        - sudo 
 
     - name: Install baseline packages
       ansible.builtin.dnf:
@@ -28,12 +34,17 @@
           - curl
           - git
         state: present
+      tags:
+        - packages
 
     - name: Ensure sshd is enabled and running
       ansible.builtin.service:
         name: sshd
         state: started
         enabled: true
+      tags:
+        - services  
+
 
     - name: Set /etc/motd banner
       ansible.builtin.copy:
@@ -44,3 +55,5 @@
         owner: root
         group: root
         mode: "0644"
+      tags:
+        - banner
