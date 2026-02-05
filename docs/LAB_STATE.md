@@ -54,4 +54,77 @@ ansible-playbooks/
 └── docs/
     ├── LAB_STATE.md
     └── PROGRESS.md
+```
 
+---
+
+## 3. Inventory Model
+
+- Inventory is YAML-based and stored in Git
+- Group and host variables separated correctly
+- Inventory is synced into AAP via Project
+- Inventory successfully used by Job Templates
+
+---
+
+## 4. Credentials & Access
+
+### AAP Credentials
+- **Source Control Credential**
+  - Type: Git
+  - Authentication: SSH key
+  - Status: Working, project sync successful
+
+- **Machine Credential**
+  - SSH private key for user `ansible`
+  - Become enabled
+  - Verified working in job runs
+
+---
+
+## 5. AAP Objects in Use
+
+- **Organization**: HomeLab
+- **Project**: ansible-playbooks (Git-backed, auto-sync)
+- **Inventory**: Lab inventory (Git-based)
+- **Job Templates**:
+  - Ping test job
+  - Baseline configuration job
+
+---
+
+## 6. Baseline Playbook Status
+
+- `playbooks/baseline.yml` exists and is active
+- Tasks included:
+  - opsuser creation and wheel membership
+  - Passwordless sudo via `/etc/sudoers.d`
+  - Baseline package installation
+  - sshd service enablement
+  - MOTD banner management
+- Tags implemented:
+  - users
+  - sudo
+  - packages
+  - services
+  - banner
+- **Idempotence verified**:
+  - Second AAP run reports `changed=0`
+
+---
+
+## 7. Development Workflow Notes
+
+- Git commits must be performed **without sudo**
+- Git user.name and user.email configured for normal user
+- Root usage restricted to system operations only
+- Ownership issues resolved with `chown` where needed
+
+---
+
+## 8. Known Constraints / Gotchas
+
+- Using `sudo git commit` causes author identity errors
+- Root-owned repo files break Git workflows
+- Idempotence must be validated in AAP, not only via CLI
+- Tags must be kept clean (no trailing whitespace) to avoid lint noise
