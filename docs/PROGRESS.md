@@ -1,63 +1,121 @@
 # PROGRESS.md
-## Ansible Automation Platform – Learning Progress
 
-Tracks what is complete, what is in progress, and what comes next.
-
----
-
-## ✅ Completed This Session
-
-### Git & Workflow
-- Git author identity configured correctly (non-root)
-- Root Git usage identified as an anti-pattern and corrected
-- Successful commit and push workflow re-established
-
-### Baseline Playbook
-- `baseline.yml` updated with:
-  - Explicit user shell
-  - Consistent task tagging
-- Baseline Job Template executed twice in AAP
-- **Idempotence confirmed**:
-  - Second run: `ok=6 changed=0 failed=0`
-
-### AAP Validation
-- Baseline playbook runs cleanly via AAP
-- Become works correctly
-- No warnings or drift detected
+## Session Overview
+This session focused on understanding and implementing Ansible **roles** in a realistic
+Ansible Automation Platform (AAP) lab. The learner transitioned from monolithic playbooks
+to role-based automation, validated execution locally and via SSH, and aligned local
+development workflows with AAP GitOps practices.
 
 ---
 
-## 🟡 In Progress
+## Roles & Playbook Architecture
 
-- Refactoring baseline playbook into a reusable **role**
-- Deciding role structure and variable placement
-- Preparing for template and handler usage
+### What was learned
+- Conceptual difference between playbooks (orchestration) and roles (implementation)
+- Why roles are essential for maintainability, reuse, and enterprise scale
+- Standard Ansible role directory structure and conventions
+- How roles are discovered using `roles_path`
+- Why roles should expose tunables via `defaults/` and not hardcode values
+
+### What was practiced
+- Creating a `common` role from scratch
+- Refactoring an existing baseline playbook into a role-based model
+- Writing role tasks, defaults, and templates
+- Running role-based playbooks locally with `ansible-playbook`
+
+### Lessons learned
+- Role task files must contain **only tasks**, not play headers
+- YAML/Jinja quoting errors are common early pitfalls
+- Small typos (`state` vs `stated`) can fully break automation
+- Good role boundaries prevent future “kitchen sink” roles
+
+### Mental models gained
+- “Playbooks orchestrate, roles implement”
+- “Defaults expose knobs; inventory defines policy”
+- “If a playbook is mostly tasks, it wants to be roles”
+
+### Skill Level Summary
+| Concept | Level |
+|------|------|
+| YAML syntax & structure | Practiced |
+| Playbooks & plays | Comfortable |
+| Tasks & modules | Comfortable |
+| Roles | Practiced |
+| Idempotence | Practiced |
 
 ---
 
-## ⏭️ Next Session Planned Work
+## Templates (Jinja2)
 
-### Roles & Structure
-- Create `roles/baseline/`
-- Move tasks into role task files
-- Decide placement for MOTD content (template vs static)
-- Introduce handlers where appropriate
+### What was learned
+- Templates are just files with variable substitution
+- Templates belong inside roles for encapsulation
+- Using `template` vs `copy` appropriately
 
-### AAP Enhancements
-- Update Job Template to use role-based playbook
-- Introduce tags usage in AAP job runs
-- Begin workflow-template discussion
+### What was practiced
+- Creating a simple `motd.j2` template
+- Deploying `/etc/motd` using a role template
+- Validating idempotence with `--diff`
 
-### Quality Improvements
-- Introduce ansible-lint considerations
-- Naming conventions aligned with enterprise repos
-- Documentation per role
+### Lessons learned
+- Templates do not need to be complex to be valuable
+- Variables should be defined outside templates (defaults/inventory)
+
+### Skill Level Summary
+| Concept | Level |
+|------|------|
+| Templates (Jinja2) | Practiced |
 
 ---
 
-## 🎯 Long-Term Direction
+## Inventory, SSH, and Execution Context
 
-- Production-grade role-based repository
-- Comfortable navigation of enterprise Ansible codebases
-- Confident use of AAP features (workflows, RBAC, surveys)
-- Alignment with RHCE-level expectations
+### What was learned
+- Managed nodes do **not** need Ansible installed
+- Difference between AAP execution identity and local CLI identity
+- Why “Too many authentication failures” happens
+- How to safely support both local and AAP execution paths
+
+### What was practiced
+- Creating a dedicated local SSH key for lab use
+- Installing public keys manually on a headless RHEL VM
+- Running Ansible locally using `--private-key`
+- Verifying connectivity with ad-hoc `ping`
+
+### Lessons learned
+- Never store private key paths in Git
+- AAP credentials ≠ developer laptop credentials
+- SSH agent and `IdentitiesOnly` are critical tools
+
+### Mental models gained
+- “Control node runs Ansible, managed nodes are passive”
+- “AAP credentials are production identities; laptop keys are dev identities”
+
+### Skill Level Summary
+| Concept | Level |
+|------|------|
+| Inventory & host grouping | Comfortable |
+| SSH authentication | Comfortable |
+| Privilege escalation (become) | Practiced |
+| Error handling & debugging | Comfortable |
+
+---
+
+## AAP Platform Integration
+
+### What was learned
+- AAP Projects are Git checkouts, not browsable file trees
+- The Job Template playbook dropdown is the authoritative view
+- Why Git is the source of truth, not the UI
+
+### What was practiced
+- Aligning local repo layout with AAP expectations
+- Understanding how AAP resolves roles and playbooks
+- Preparing a role-based repo for AAP execution
+
+### Skill Level Summary
+| Concept | Level |
+|------|------|
+| GitOps workflow | Comfortable |
+| AAP Projects | Practiced |
+| AAP Job Templates | Practiced |
