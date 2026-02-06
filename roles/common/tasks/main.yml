@@ -1,0 +1,44 @@
+---  
+
+- name: Install baseline packages
+  ansible.builtin.package:
+    name: "{{ common_packages }}" 
+    state: present
+  tags:
+    - packages
+
+- name:  Ensure common_dirs exist with correct perms
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ common_dirs }}"
+  tags:
+    - dirs
+
+- name: Deploy /etc/motd
+  ansible.builtin.template:
+    src: motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: "0644"
+  tags:
+    - motd
+
+- name: Ensure time sync package is installed
+  ansible.builtin.package:
+    name: "{{ common_timesync_package }}"
+    state: present
+  tags:
+    - timesync
+
+- name: Ensure time sync is enabled and started
+  ansible.builtin.service:
+    name: "{{ common_timesync_service }}"
+    enabled: true
+    state: started
+  tags:
+    - timesync

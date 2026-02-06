@@ -1,0 +1,22 @@
+---
+common_packages:
+  - vim-minimal
+  - git
+  - curl
+
+common_motd: |
+  Authorized access only.
+  This system is managed by Ansible (AAP Homelab).
+
+common_dirs:
+  - path: /opt/tools
+    owner: root
+    group: root
+    mode: "0755"
+  - path: /var/log/custom
+    owner: root
+    group: root
+    mode: "0750"
+
+common_timesync_package: chrony
+common_timesync_service: chronyd
